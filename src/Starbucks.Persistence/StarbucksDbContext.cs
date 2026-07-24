@@ -16,5 +16,18 @@ namespace Starbucks.Persistence
         public required DbSet<Coffe> Coffes { get; set; }
 
         public required DbSet<Ingredient> Ingredients { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Coffes)
+                .WithOne(co => co.Category)
+                .HasForeignKey(co => co.CategoryId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade); 
+        }
     }
 }
